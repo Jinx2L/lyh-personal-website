@@ -1,0 +1,33 @@
+#contact .contact-inner { position: relative; }
+#contact .contact-invitation {
+  position: absolute;
+  top: 104px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: #66734F;
+}
+#contact .contact-invitation p {
+  margin: 0;
+  text-align: right;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 400;
+}
+#contact .contact-invitation img {
+  display: block;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 16px;
+}
+@media (max-width: 620px) {
+  #contact .contact-invitation {
+    position: static;
+    align-self: flex-end;
+    margin-top: 28px;
+  }
+}

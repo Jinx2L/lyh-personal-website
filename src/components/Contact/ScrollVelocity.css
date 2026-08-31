@@ -1,0 +1,8 @@
+#contact .contact-velocity { display: block; color: inherit; }
+#contact .contact-velocity-row { display: block; position: relative; overflow: hidden; padding-block: .15em; margin-block: -.15em; color: inherit; }
+#contact .contact-velocity-track { display: flex; width: max-content; white-space: nowrap; font: inherit; letter-spacing: inherit; color: inherit; will-change: transform; }
+#contact .contact-velocity-copy { display: block; flex-shrink: 0; color: inherit; }
+#contact .contact-velocity-row:nth-child(2) { color: rgba(9,9,9,.32); }
+@media (prefers-reduced-motion: reduce) {
+  #contact .contact-velocity-track { will-change: auto; }
+}
