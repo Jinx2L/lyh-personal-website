@@ -1,5 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { Contact } from './Contact'
+import scrollVelocitySource from './ScrollVelocity.tsx?raw'
+
+it('uses the window resize listener only as a ResizeObserver fallback', () => {
+  expect(scrollVelocitySource).toContain("if (typeof ResizeObserver !== 'undefined')")
+  expect(scrollVelocitySource).toContain("window.addEventListener('resize', update)")
+  expect(scrollVelocitySource).toContain("return () => window.removeEventListener('resize', update)")
+})
 
 it('shows the two-line invitation next to the reused About portrait', () => {
   const { container } = render(<Contact />)

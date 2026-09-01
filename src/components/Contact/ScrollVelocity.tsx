@@ -23,10 +23,13 @@ function useElementWidth(ref: RefObject<HTMLSpanElement | null>) {
   useLayoutEffect(() => {
     const update = () => setWidth(ref.current?.offsetWidth ?? 0)
     update()
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
-    if (ref.current) observer?.observe(ref.current)
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(update)
+      if (ref.current) observer.observe(ref.current)
+      return () => observer.disconnect()
+    }
     window.addEventListener('resize', update)
-    return () => { observer?.disconnect(); window.removeEventListener('resize', update) }
+    return () => window.removeEventListener('resize', update)
   }, [ref])
   return width
 }

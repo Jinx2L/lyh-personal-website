@@ -29,7 +29,7 @@
   top: 0;
   left: 0;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 32px;
   will-change: transform;
   transform: translateZ(0);
 }

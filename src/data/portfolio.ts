@@ -80,6 +80,7 @@ export const projects: Project[] = [
 export const expertise: ExpertiseItem[] = [
   {
     id: '01',
+    iconSrc: '/assets/expertise-systems.svg',
     title: 'Complex B2B Systems',
     zh: '复杂 B 端系统',
     description: '把高密度业务信息重新组织成可理解、可扩展、可持续迭代的产品结构。',
@@ -87,6 +88,7 @@ export const expertise: ExpertiseItem[] = [
   },
   {
     id: '02',
+    iconSrc: '/assets/expertise-data.svg',
     title: 'Data Visualization',
     zh: '数据可视化',
     description: '建立指标层级和图表语言，让数据从“看见”进一步走向“判断与行动”。',
@@ -94,6 +96,7 @@ export const expertise: ExpertiseItem[] = [
   },
   {
     id: '03',
+    iconSrc: '/assets/expertise-mobile.svg',
     title: 'Mobile & Commerce',
     zh: '移动与电商体验',
     description: '熟悉 App / H5 / 小程序设计规范，关注关键路径、转化效率与体验连续性。',
@@ -101,6 +104,7 @@ export const expertise: ExpertiseItem[] = [
   },
   {
     id: '04',
+    iconSrc: '/assets/expertise-design.svg',
     title: 'Design System & Delivery',
     zh: '设计系统与落地',
     description: '通过组件体系、规范与 UI 走查，提升设计一致性和跨团队交付效率。',

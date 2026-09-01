@@ -19,6 +19,7 @@ export type Project = {
 
 export type ExpertiseItem = {
   id: string
+  iconSrc: string
   title: string
   zh: string
   description: string

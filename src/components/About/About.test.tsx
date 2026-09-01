@@ -8,6 +8,7 @@ describe('About', () => {
     expect(portrait).toHaveAttribute('src', '/assets/aboutme.jpg')
     expect(portrait).toHaveAttribute('loading', 'lazy')
     expect(portrait).toHaveAttribute('decoding', 'async')
+    expect(portrait).toHaveClass('about-portrait-rounded')
     expect(screen.getByText('9+')).toBeInTheDocument()
     expect(screen.getByText('0→1')).toBeInTheDocument()
     expect(screen.getByText('90%+')).toBeInTheDocument()

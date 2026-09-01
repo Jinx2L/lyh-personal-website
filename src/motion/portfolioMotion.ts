@@ -25,9 +25,6 @@ export function createOpening(root: HTMLElement, compact: boolean) {
 export function createCaseOpening(root: HTMLElement, compact: boolean) {
   const find = (selector: string) => Array.from(root.querySelectorAll(selector))
   const opening = gsap.timeline({ defaults: { ease: 'power4.out' } })
-  opening.fromTo(find('.case-hero .experience-aurora'),
-    { opacity: 0, scale: compact ? 1.03 : 1.1 },
-    { opacity: .72, scale: 1, duration: 2.4, clearProps: 'transform,opacity' }, 0)
   opening.fromTo(find('.case-hero-title-line'),
     { yPercent: 118, scaleY: .58, transformOrigin: '50% 100%' },
     { yPercent: 0, scaleY: 1, duration: 1.7, stagger: .16,
@@ -35,7 +32,7 @@ export function createCaseOpening(root: HTMLElement, compact: boolean) {
   opening.fromTo(find('.case-nav > *, .case-kicker'),
     { y: compact ? -18 : -30, opacity: 0 },
     { y: 0, opacity: 1, duration: .95, stagger: .08, clearProps: 'transform,opacity' }, .88)
-  opening.fromTo(find('.case-hero-bottom, .case-scroll'),
+  opening.fromTo(find('.case-hero-bottom, .case-scroll, .academic-hero-support, .academic-placeholder-card, .academic-hero-meta'),
     { y: compact ? 32 : 64, opacity: 0, clipPath: 'inset(0 0 100% 0)' },
     { y: 0, opacity: 1, clipPath: 'inset(-10% -2% -10% -2%)', duration: 1.2,
       stagger: .14, clearProps: 'transform,opacity,clipPath' }, 1.12)
@@ -117,13 +114,25 @@ export function mountPortfolioMotion(root: HTMLElement, { reduced, compact }: { 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.setAttribute('data-motion-visible', String(entry.isIntersecting)))
   }, { rootMargin: '100px' })
-  const ambientSections = root.querySelectorAll('#top, #experience, #expertise, .case-hero--aurora')
+  const ambientSections = root.querySelectorAll('#top, #experience, .academic-hero-illustrations, .academic-focus-marquee')
   ambientSections.forEach(section => observer.observe(section))
+  const academicMarquee = root.querySelector<HTMLElement>('.academic-focus-marquee')
+  const setMarqueeRate = (rate: number) => {
+    academicMarquee?.querySelector<HTMLElement>('.academic-focus-track')?.getAnimations().forEach(animation => {
+      animation.updatePlaybackRate(rate)
+    })
+  }
+  const slowMarquee = () => setMarqueeRate(.38)
+  const resumeMarquee = () => setMarqueeRate(1)
+  academicMarquee?.addEventListener('mouseenter', slowMarquee)
+  academicMarquee?.addEventListener('mouseleave', resumeMarquee)
   let disposed = false
   void document.fonts?.ready.then(() => { if (!disposed) ScrollTrigger.refresh() })
   return () => {
     disposed = true
     observer.disconnect()
+    academicMarquee?.removeEventListener('mouseenter', slowMarquee)
+    academicMarquee?.removeEventListener('mouseleave', resumeMarquee)
     ambientSections.forEach(section => section.removeAttribute('data-motion-visible'))
     context.revert()
   }

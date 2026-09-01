@@ -8,7 +8,11 @@ export function ExpertiseCard({ item }: { item: ExpertiseItem }) {
       borderRadius={28} glowRadius={40} glowIntensity={0.7} coneSpread={25}
       animated colors={['#88966a', '#0a0a09', '#213d82']}>
     <article className="expertise-card">
-      <div className="expertise-top"><span>{item.id}</span><ArrowUpRight size={18} strokeWidth={1.3} /></div>
+      <div className="expertise-top">
+        <img className="expertise-icon" src={item.iconSrc} alt="" width={64} height={64}
+          data-default-opacity="0.6" data-hover-opacity="1" loading="lazy" decoding="async" />
+        <span className="expertise-index">{item.id}<ArrowUpRight size={18} strokeWidth={1.3} /></span>
+      </div>
       <div>
         <p className="expertise-en">{item.title}</p>
         <h3>{item.zh}</h3>

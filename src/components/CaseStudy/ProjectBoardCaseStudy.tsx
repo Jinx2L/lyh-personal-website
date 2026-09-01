@@ -1,5 +1,4 @@
 import { ArrowDownRight, ArrowLeft } from 'lucide-react'
-import { AuroraBackground } from '../Experience/AuroraBackground'
 import './AcademicCaseStudy.css'
 import './ProjectBoardCaseStudy.css'
 
@@ -7,6 +6,14 @@ type CaseConfig = {
   number: string; kicker: string; title: [string, string]; summary: string; period: string; scope: string
   overviewTitle: [string, string]; overview: string; focus: string[]
   boardImage: string; boardAlt: string; boardCopy: string; valueTitle: [string, string]; valueCopy: string
+  storyHero?: {
+    eyebrow: string
+    lines: string[]
+    note: string
+    images: { src: string; alt: string }[]
+    titleLineHeight?: number
+    tightMeta?: boolean
+  }
 }
 
 export function ProjectBoardCaseStudy({ config }: { config: CaseConfig }) {
@@ -15,21 +22,69 @@ export function ProjectBoardCaseStudy({ config }: { config: CaseConfig }) {
       <a href="/#works" aria-label="返回作品首页项目列表"><ArrowLeft size={18}/> 返回作品</a>
       <span>2L. / CASE STUDY {config.number}</span>
     </header>
-    <section className="case-hero case-hero--aurora case-hero--full-bleed-aurora site-container" data-case-section="hero">
-      <AuroraBackground />
-      <p className="case-kicker">{config.kicker}</p>
-      <h1 style={{ fontSize: 'clamp(64px, 7.5vw, 136px)', lineHeight: .9, letterSpacing: '-0.05em' }}><span className="case-hero-title-mask"><span className="case-hero-title-line">{config.title[0]}</span></span><span className="case-hero-title-mask"><span className="case-hero-title-line case-hero-title-line--dim">{config.title[1]}</span></span></h1>
-      <div className="case-hero-bottom"><p>{config.summary}</p><dl>
-        <div><dt>ROLE</dt><dd>UI 设计师</dd></div><div><dt>PERIOD</dt><dd>{config.period}</dd></div><div><dt>SCOPE</dt><dd>{config.scope}</dd></div>
-      </dl></div>
-      <a className="case-scroll" href="#case-overview">EXPLORE CASE <ArrowDownRight size={17}/></a>
-    </section>
+    {config.storyHero ? (
+      <section className="case-hero academic-story-hero academic-story-hero--site-background" data-case-section="hero">
+        <div className="academic-hero-grid" aria-hidden="true" />
+        <div className="site-container academic-hero-inner">
+          <p className="case-kicker academic-hero-eyebrow">{config.storyHero.eyebrow}</p>
+          <div className="academic-hero-stage">
+            <div className="academic-hero-copy">
+              <h1 style={{ fontSize: 'clamp(64px, 7.5vw, 136px)', lineHeight: config.storyHero.titleLineHeight ?? .9, letterSpacing: '-0.05em' }}>
+                {config.storyHero.lines.map((line, index) => (
+                  <span className="case-hero-title-mask" key={line}><span className={`case-hero-title-line${index === config.storyHero!.lines.length - 1 ? ' academic-hero-accent' : ''}`}>{line}</span></span>
+                ))}
+              </h1>
+              <div className="academic-hero-support">
+                <p>{config.summary}</p>
+                <p className="academic-hero-note"><span aria-hidden="true">↳</span> {config.storyHero.note}</p>
+                <div className="academic-hero-actions">
+                  <a className="academic-hero-primary" href="#full-project-board" aria-label="查看项目全貌">查看项目全貌 <ArrowDownRight size={17}/></a>
+                  <a className="academic-hero-secondary" href="#case-overview" aria-label="了解设计思路">了解设计思路 <ArrowDownRight size={17}/></a>
+                </div>
+              </div>
+            </div>
+            <div className={`academic-placeholder-stack academic-hero-illustrations academic-hero-illustrations--shifted academic-hero-illustrations--count-${config.storyHero.images.length}`}>
+              {config.storyHero.images.map((image, imageIndex) => { const index = imageIndex + 1; return <div className={`academic-placeholder-card academic-placeholder-card--plain academic-placeholder-card--${index}`} key={image.src}>
+                <div className={`academic-reference-float academic-reference-float--${index}`}>
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    decoding="async"
+                  />
+                </div>
+              </div>})}
+            </div>
+          </div>
+          <div className={`academic-hero-meta ${config.storyHero.tightMeta ? 'academic-hero-meta--tight' : 'academic-hero-meta--spaced'}`}>
+            <span>{config.kicker}</span>
+            <dl><div><dt>ROLE</dt><dd>UI 设计师</dd></div><div><dt>PERIOD</dt><dd>{config.period}</dd></div><div><dt>SCOPE</dt><dd>{config.scope}</dd></div></dl>
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section className="case-hero site-container" data-case-section="hero">
+        <p className="case-kicker">{config.kicker}</p>
+        <h1 style={{ fontSize: 'clamp(64px, 7.5vw, 136px)', lineHeight: .9, letterSpacing: '-0.05em' }}><span className="case-hero-title-mask"><span className="case-hero-title-line">{config.title[0]}</span></span><span className="case-hero-title-mask"><span className="case-hero-title-line case-hero-title-line--dim">{config.title[1]}</span></span></h1>
+        <div className="case-hero-bottom"><p>{config.summary}</p><dl>
+          <div><dt>ROLE</dt><dd>UI 设计师</dd></div><div><dt>PERIOD</dt><dd>{config.period}</dd></div><div><dt>SCOPE</dt><dd>{config.scope}</dd></div>
+        </dl></div>
+        <a className="case-scroll" href="#case-overview">EXPLORE CASE <ArrowDownRight size={17}/></a>
+      </section>
+    )}
     <section className="case-block site-container" id="case-overview" data-case-section="overview">
       <div className="case-label">01 / PROJECT OVERVIEW</div>
       <div className="case-intro"><h2 className="case-module-title case-overview-title"><span className="case-overview-line">{config.overviewTitle[0]}</span><span className="case-overview-line">{config.overviewTitle[1]}</span></h2><p>{config.overview}</p></div>
-      <div className="board-case-focus">{config.focus.map((item, index) => <article key={item}><span>0{index + 1}</span><strong>{item}</strong></article>)}</div>
+      {config.storyHero ? <div className="academic-focus-marquee academic-focus-marquee--fast academic-focus-marquee--tall" aria-label="项目核心能力">
+        <div className="academic-focus-track">
+          {[false, true].map(duplicate => <div className="academic-focus-group" aria-hidden={duplicate || undefined} key={String(duplicate)}>
+            {config.focus.map(item => <span className="academic-focus-item" key={item}>
+              <strong>{item}</strong><span className="academic-focus-separator" aria-hidden="true"> * </span>
+            </span>)}
+          </div>)}
+        </div>
+      </div> : <div className="board-case-focus">{config.focus.map((item, index) => <article key={item}><span>0{index + 1}</span><strong>{item}</strong></article>)}</div>}
     </section>
-    <section className="board-case-project" data-case-section="project-board">
+    <section className="board-case-project" id="full-project-board" data-case-section="project-board">
       <div className="site-container board-case-project-heading"><div className="case-label">02 / FULL PROJECT BOARD</div><div className="case-intro"><h2 className="case-module-title">完整项目，<br/><span>完整呈现。</span></h2><p>{config.boardCopy}</p></div></div>
       <div className="board-case-stage"><a className="site-container" href={config.boardImage} target="_blank" rel="noreferrer" aria-label={`查看${config.title.join('')}项目原图`}><img src={config.boardImage} alt={config.boardAlt} loading="lazy" decoding="async"/></a></div>
     </section>

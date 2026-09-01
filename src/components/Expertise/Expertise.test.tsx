@@ -1,12 +1,44 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Expertise } from './Expertise'
+import systemsIcon from '../../../public/assets/expertise-systems.svg?raw'
+import dataIcon from '../../../public/assets/expertise-data.svg?raw'
+import mobileIcon from '../../../public/assets/expertise-mobile.svg?raw'
+import designIcon from '../../../public/assets/expertise-design.svg?raw'
 
-it('places three Aurora bands behind the unchanged expertise cards', () => {
+it('renders expertise cards without an Aurora background', () => {
   const { container } = render(<Expertise />)
   const section = container.querySelector('#expertise')!
-  expect(section.querySelector('.experience-aurora')).toHaveAttribute('aria-hidden', 'true')
-  expect(section.querySelectorAll('.experience-aurora-band')).toHaveLength(3)
+  expect(section.querySelector('.experience-aurora')).not.toBeInTheDocument()
   expect(section.querySelectorAll('.experience-content .expertise-card')).toHaveLength(4)
+})
+
+it('adds a distinct generated icon to every expertise card', () => {
+  const { container } = render(<Expertise />)
+  const icons = Array.from(container.querySelectorAll<HTMLImageElement>('.expertise-icon'))
+  expect(icons).toHaveLength(4)
+  expect(new Set(icons.map(icon => icon.getAttribute('src')))).toHaveProperty('size', 4)
+  icons.forEach(icon => {
+    expect(icon.getAttribute('src')).toMatch(/\.svg$/)
+    expect(icon).toHaveAttribute('alt', '')
+    expect(icon).toHaveAttribute('width', '64')
+    expect(icon).toHaveAttribute('height', '64')
+  })
+})
+
+it('uses the site warm-white color for every expertise icon stroke', () => {
+  ;[systemsIcon, dataIcon, mobileIcon, designIcon].forEach(svg => {
+    expect(svg).toContain('stroke="#E7E4D6"')
+    expect(svg).not.toContain('stroke="#B6C88F"')
+    expect(svg).toContain('fill="#23221F"')
+  })
+})
+
+it('raises expertise icon opacity from sixty percent to full on card hover', () => {
+  const { container } = render(<Expertise />)
+  container.querySelectorAll('.expertise-icon').forEach(icon => {
+    expect(icon).toHaveAttribute('data-default-opacity', '0.6')
+    expect(icon).toHaveAttribute('data-hover-opacity', '1')
+  })
 })
 
 it('does not run decorative border sweeps before the cards enter the viewport', () => {
