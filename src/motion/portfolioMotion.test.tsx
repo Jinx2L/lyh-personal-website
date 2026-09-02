@@ -104,3 +104,19 @@ it('reveals section content and removes its scroll controllers on teardown', asy
   expect(ScrollTrigger.getAll()).toHaveLength(before)
   geometry.mockRestore()
 })
+
+it('keeps project media at scale one while retaining desktop scroll parallax', async () => {
+  const { container } = await renderLoadedApp()
+  const geometry = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+    x: 0, y: 2000, top: 2000, bottom: 2400, left: 0, right: 1000, width: 1000, height: 400,
+    toJSON: () => ({}),
+  })
+  const before = ScrollTrigger.getAll().length
+  const cleanup = mountPortfolioMotion(container, { reduced: false, compact: false })
+  const media = container.querySelector<HTMLElement>('.project-shot')!
+  const triggers = ScrollTrigger.getAll().slice(before)
+  expect(Number(gsap.getProperty(media, 'scale'))).toBe(1)
+  expect(triggers.some(trigger => trigger.vars.scrub === 1.2)).toBe(true)
+  cleanup()
+  geometry.mockRestore()
+})

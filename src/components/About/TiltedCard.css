@@ -58,12 +58,9 @@
 }
 /* Preserve v3's portrait footprint while allowing the reference tilt/scale. */
 #about .about-visual {
-  --portrait-height: 560px;
+  --portrait-height: 100%;
   overflow: visible;
   background: transparent;
   border: 0;
 }
 #about .about-copy .display-heading { line-height: 1.0; }
-@media (max-width: 900px) {
-  #about .about-visual { --portrait-height: 460px; }
-}

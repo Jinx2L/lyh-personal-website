@@ -103,8 +103,8 @@ export function mountPortfolioMotion(root: HTMLElement, { reduced, compact }: { 
       section.querySelectorAll('.project-card').forEach((card, index) => {
         reveal(Array.from(card.querySelectorAll('.project-visual, .project-meta, .project-description')), card, index % 2 * 0.15)
         const media = card.querySelector('.project-shot')
-        if (media && !compact) gsap.fromTo(media, { yPercent: -3, scale: 1.08 },
-          { yPercent: 3, scale: 1.08, ease: 'none',
+        if (media && !compact) gsap.fromTo(media, { yPercent: -3 },
+          { yPercent: 3, ease: 'none',
             scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 1.2 } })
       })
       const portrait = section.querySelector('.about-visual')

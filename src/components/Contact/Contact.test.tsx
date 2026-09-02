@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { Contact } from './Contact'
 import scrollVelocitySource from './ScrollVelocity.tsx?raw'
 
@@ -34,4 +34,42 @@ it('keeps the two title lines in separate looping tracks', () => {
   expect(rows).toHaveLength(2)
   expect([...rows].map(row => row.querySelector('.contact-velocity-copy')?.textContent?.trim())).toEqual(["LET'S CREATE", 'SOMETHING CLEAR.'])
   expect(container.querySelectorAll('.contact-velocity-copy')).toHaveLength(12)
+})
+
+it('schedules contact animation frames only while rows are visible and cancels them on unmount', () => {
+  const OriginalObserver = globalThis.IntersectionObserver
+  const observed: Array<{ callback: IntersectionObserverCallback; target?: Element }> = []
+  class ControlledObserver {
+    record: { callback: IntersectionObserverCallback; target?: Element }
+    constructor(callback: IntersectionObserverCallback) {
+      this.record = { callback }
+      observed.push(this.record)
+    }
+    observe(target: Element) { this.record.target = target }
+    unobserve() {}
+    disconnect() {}
+    takeRecords() { return [] }
+    root = null
+    rootMargin = '0px'
+    scrollMargin = '0px'
+    thresholds = [0]
+  }
+  globalThis.IntersectionObserver = ControlledObserver as unknown as typeof IntersectionObserver
+  const width = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(400)
+  const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 7)
+  const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
+  try {
+    const view = render(<Contact />)
+    expect(raf).not.toHaveBeenCalled()
+    act(() => observed.forEach(({ callback, target }) => callback([
+      { isIntersecting: true, target } as IntersectionObserverEntry,
+    ], {} as IntersectionObserver)))
+    expect(raf).toHaveBeenCalled()
+    view.unmount()
+    expect(cancel).toHaveBeenCalled()
+  } finally {
+    globalThis.IntersectionObserver = OriginalObserver
+    width.mockRestore()
+    vi.restoreAllMocks()
+  }
 })

@@ -11,7 +11,9 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
     const video = videoRef.current
     if (!video) return
     video.pause()
-    video.currentTime = 0
+    if (Number.isFinite(video.duration) && video.duration > 0) {
+      video.currentTime = Math.max(0, video.duration - 1 / 60)
+    }
   }
 
   function startPreview() {
@@ -25,10 +27,10 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
   }
 
   const visual = <div className={`project-visual visual-${project.visualKey}`}>
-    <div className="project-ui-shell">
+    <div className="project-ui-shell" style={{ aspectRatio: '4 / 3' }}>
       {project.videoSrc ? (
         <video ref={videoRef} className="project-shot" src={project.videoSrc} poster={project.imageSrc}
-          aria-label={`${project.name}项目展示`} muted loop playsInline preload="none" />
+          aria-label={`${project.name}项目展示`} muted loop playsInline preload="none" style={{ objectFit: 'contain' }} />
       ) : (
         <img className="project-shot" src={project.imageSrc} alt={`${project.name}项目展示`} loading="lazy" decoding="async" />
       )}

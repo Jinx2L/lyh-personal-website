@@ -52,7 +52,8 @@ export const projects: Project[] = [
     year: '2020.07-2025.07',
     summary: '主导商城首页 CMS 组件化改版，设计 6 大类可配置组件与分佣全链路，持续完成小程序功能迭代与 UI 走查，保障开发还原度达 90% 以上。',
     metric: '35% 用户活跃度提升',
-    imageSrc: '/assets/project-cloud.jpg',
+    imageSrc: '/assets/project-cloud-v2-poster.jpg',
+    videoSrc: '/assets/project-cloud-v2.mp4',
     visualKey: 'cloud',
   },
   {
@@ -61,8 +62,8 @@ export const projects: Project[] = [
     tags: ['B2B', 'Data Platform', 'Design System'],
     year: '2023.11-2024.01',
     summary: '围绕商超多业态会员运营，整合会员增长、消费转化与积分权益数据，构建数据可视化运营体系及后台设计规范，协同产品与研发完成落地验收。',
-    imageSrc: '/assets/project-membership-poster.jpg',
-    videoSrc: '/assets/project-membership.mp4',
+    imageSrc: '/assets/project-membership-v2-poster.jpg',
+    videoSrc: '/assets/project-membership-v2.mp4',
     visualKey: 'marketing',
   },
   {
@@ -71,8 +72,8 @@ export const projects: Project[] = [
     tags: ['Enterprise WeChat', 'Mini Program'],
     year: '2022.01-2022.05',
     summary: '面向汽车销售顾问，完成客户管理、营销任务与素材中心的 UI 及交互设计，优化线索跟进和内容检索流程，输出组件规范并跟进前端还原。',
-    imageSrc: '/assets/project-auto-poster.jpg',
-    videoSrc: '/assets/project-auto.mp4',
+    imageSrc: '/assets/project-auto-v2-poster.jpg',
+    videoSrc: '/assets/project-auto-v2.mp4',
     visualKey: 'auto',
   },
 ]

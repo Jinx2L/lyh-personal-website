@@ -11,6 +11,13 @@ it('does not ship superseded case-study assets or styles', () => {
   expect(Object.keys(publicAssets)).not.toContain('../public/assets/membership-hero-illustration-1.png')
   expect(Object.keys(publicAssets)).not.toContain('../public/assets/membership-hero-illustration-2.png')
   expect(Object.keys(publicAssets)).not.toContain('../public/assets/membership-hero-illustration-3.png')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-cloud.jpg')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-cloud.mp4')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-cloud-poster.jpg')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-membership.mp4')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-membership-poster.jpg')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-auto.mp4')
+  expect(Object.keys(publicAssets)).not.toContain('../public/assets/project-auto-poster.jpg')
   expect(Object.keys(caseStudyCss)).not.toContain('./components/CaseStudy/ChongbaiCaseStudy.css')
 })
 

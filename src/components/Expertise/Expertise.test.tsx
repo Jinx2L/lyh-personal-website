@@ -30,6 +30,8 @@ it('uses the site warm-white color for every expertise icon stroke', () => {
     expect(svg).toContain('stroke="#E7E4D6"')
     expect(svg).not.toContain('stroke="#B6C88F"')
     expect(svg).toContain('fill="#23221F"')
+    expect(svg).toContain('stroke-width="1.6"')
+    expect(svg).not.toContain('stroke-width="2"')
   })
 })
 
