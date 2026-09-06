@@ -25,6 +25,15 @@ describe('Contact', () => {
     expect(screen.getByText('17711059534')).toBeInTheDocument()
     expect(screen.getByLabelText('返回顶部')).toHaveAttribute('href', '#top')
   })
+
+  it('keeps the statement flexible, fourteen pixels, and right aligned', () => {
+    const { container } = render(<Contact />)
+    const statement = container.querySelector('.contact-cn')
+    expect(statement).toHaveClass('contact-cn--wide-right')
+    expect(statement).toHaveAttribute('data-font-size', '14px')
+    expect(statement).toHaveAttribute('data-alignment', 'right')
+    expect(statement).toHaveAttribute('data-wrapping', 'natural')
+  })
 })
 
 it('keeps the two title lines in separate looping tracks', () => {

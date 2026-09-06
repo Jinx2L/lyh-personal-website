@@ -167,6 +167,18 @@ it.each([
   points.forEach(point => expect(marquee).toHaveTextContent(point))
 })
 
+it.each(['/projects/academic', '/projects/chongbai', '/projects/membership', '/projects/auto'])(
+  'left aligns the project value copy and dims only the second title line on %s',
+  async path => {
+    const { container } = await renderAppAt(path)
+    const section = container.querySelector('[data-case-section="value"]')!
+    const title = section.querySelector('h2')!
+    expect(title.querySelectorAll('.case-value-title-line')).toHaveLength(2)
+    expect(title.querySelector('.case-value-title-line--dim')).toBe(title.querySelectorAll('.case-value-title-line')[1])
+    expect(section.querySelector('.case-value-copy')).toHaveAttribute('data-layout', 'single-column')
+  },
+)
+
 it.each([
   ['/projects/auto', '企微汽贸小程序', '企微汽贸小程序完整项目设计展示', '/assets/auto-case-study-ui-07.jpg', '客户管理', '围绕销售流程，', '降低操作成本。', '2022.01-2022.05'],
 ])('renders %s in the shared case-study framework', async (path, title, alt, src, focus, overviewFirstLine, overviewSecondLine, period) => {

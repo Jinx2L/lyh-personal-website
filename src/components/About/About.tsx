@@ -13,8 +13,7 @@ export function About() {
             从复杂业务出发，<br />把信息、交互与视觉组织成<br /><span className="heading-dim">清晰的产品体验。</span>
           </RevealText>
           <RevealText as="p" className="body-copy about-body">
-            拥有 9+ 年 UI / 视觉设计经验，长期参与 B 端复杂系统、移动产品、电商与数据可视化设计。
-            我习惯从业务、用户与技术三个维度理解问题，再通过信息架构、交互与视觉系统，让复杂内容变得可理解、可操作、可持续迭代。
+            拥有9+年 UI 设计经验，深耕 B 端系统与 App、H5、小程序等移动端产品设计，兼具 0‑1 搭建与大型项目迭代能力。擅长梳理业务信息流，从业务、用户、技术视角出发，搭建清晰可扩展的交互界面与设计规范，善用 Vibe coding辅助设计提升落地交付效率。
           </RevealText>
         </div>
         <div className="about-visual">

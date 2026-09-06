@@ -4,7 +4,7 @@ export const experiences: Experience[] = [
   {
     company: '独立 UI 设计师',
     role: 'UI 设计师',
-    period: '2025.08–至今',
+    period: '2025.09–至今',
     focus: ['承接全链路 UI 设计项目', '独立负责客户需求对接到开发落地跟进'],
   },
   {

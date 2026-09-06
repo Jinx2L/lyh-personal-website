@@ -8,7 +8,7 @@ describe('ExperienceTimeline', () => {
     expect(screen.getAllByText('UI 设计师').length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText('承接全链路 UI 设计项目')).toBeInTheDocument()
     expect(screen.getByText('独立负责客户需求对接到开发落地跟进')).toBeInTheDocument()
-    expect(screen.getByText('2025.08–至今')).toBeInTheDocument()
+    expect(screen.getByText('2025.09–至今')).toBeInTheDocument()
     expect(screen.getByText('九章开物（重庆）科技有限公司')).toBeInTheDocument()
     expect(screen.getByText('2020.07–2025.08')).toBeInTheDocument()
     expect(screen.getByText('2016.11–2020.07')).toBeInTheDocument()

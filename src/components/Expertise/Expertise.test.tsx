@@ -20,8 +20,8 @@ it('adds a distinct generated icon to every expertise card', () => {
   icons.forEach(icon => {
     expect(icon.getAttribute('src')).toMatch(/\.svg$/)
     expect(icon).toHaveAttribute('alt', '')
-    expect(icon).toHaveAttribute('width', '64')
-    expect(icon).toHaveAttribute('height', '64')
+    expect(icon).toHaveAttribute('width', '48')
+    expect(icon).toHaveAttribute('height', '48')
   })
 })
 
@@ -30,7 +30,8 @@ it('uses the site warm-white color for every expertise icon stroke', () => {
     expect(svg).toContain('stroke="#E7E4D6"')
     expect(svg).not.toContain('stroke="#B6C88F"')
     expect(svg).toContain('fill="#23221F"')
-    expect(svg).toContain('stroke-width="1.6"')
+    expect(svg).toContain('stroke-width="1.4"')
+    expect(svg).not.toContain('stroke-width="1.6"')
     expect(svg).not.toContain('stroke-width="2"')
   })
 })
