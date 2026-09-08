@@ -2,12 +2,6 @@ import type { ContactInfo, Experience, ExpertiseItem, Metric, Project } from '..
 
 export const experiences: Experience[] = [
   {
-    company: '独立 UI 设计师',
-    role: 'UI 设计师',
-    period: '2025.09–至今',
-    focus: ['承接全链路 UI 设计项目', '独立负责客户需求对接到开发落地跟进'],
-  },
-  {
     company: '九章开物（重庆）科技有限公司',
     role: 'UI 设计师',
     period: '2020.07–2025.08',
