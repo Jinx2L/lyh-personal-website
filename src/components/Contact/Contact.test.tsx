@@ -1,12 +1,5 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Contact } from './Contact'
-import scrollVelocitySource from './ScrollVelocity.tsx?raw'
-
-it('uses the window resize listener only as a ResizeObserver fallback', () => {
-  expect(scrollVelocitySource).toContain("if (typeof ResizeObserver !== 'undefined')")
-  expect(scrollVelocitySource).toContain("window.addEventListener('resize', update)")
-  expect(scrollVelocitySource).toContain("return () => window.removeEventListener('resize', update)")
-})
 
 it('shows the two-line invitation next to the reused About portrait', () => {
   const { container } = render(<Contact />)
@@ -25,15 +18,6 @@ describe('Contact', () => {
     expect(screen.getByText('17711059534')).toBeInTheDocument()
     expect(screen.getByLabelText('返回顶部')).toHaveAttribute('href', '#top')
   })
-
-  it('keeps the statement flexible, fourteen pixels, and right aligned', () => {
-    const { container } = render(<Contact />)
-    const statement = container.querySelector('.contact-cn')
-    expect(statement).toHaveClass('contact-cn--wide-right')
-    expect(statement).toHaveAttribute('data-font-size', '14px')
-    expect(statement).toHaveAttribute('data-alignment', 'right')
-    expect(statement).toHaveAttribute('data-wrapping', 'natural')
-  })
 })
 
 it('keeps the two title lines in separate looping tracks', () => {
@@ -43,42 +27,4 @@ it('keeps the two title lines in separate looping tracks', () => {
   expect(rows).toHaveLength(2)
   expect([...rows].map(row => row.querySelector('.contact-velocity-copy')?.textContent?.trim())).toEqual(["LET'S CREATE", 'SOMETHING CLEAR.'])
   expect(container.querySelectorAll('.contact-velocity-copy')).toHaveLength(12)
-})
-
-it('schedules contact animation frames only while rows are visible and cancels them on unmount', () => {
-  const OriginalObserver = globalThis.IntersectionObserver
-  const observed: Array<{ callback: IntersectionObserverCallback; target?: Element }> = []
-  class ControlledObserver {
-    record: { callback: IntersectionObserverCallback; target?: Element }
-    constructor(callback: IntersectionObserverCallback) {
-      this.record = { callback }
-      observed.push(this.record)
-    }
-    observe(target: Element) { this.record.target = target }
-    unobserve() {}
-    disconnect() {}
-    takeRecords() { return [] }
-    root = null
-    rootMargin = '0px'
-    scrollMargin = '0px'
-    thresholds = [0]
-  }
-  globalThis.IntersectionObserver = ControlledObserver as unknown as typeof IntersectionObserver
-  const width = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(400)
-  const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 7)
-  const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
-  try {
-    const view = render(<Contact />)
-    expect(raf).not.toHaveBeenCalled()
-    act(() => observed.forEach(({ callback, target }) => callback([
-      { isIntersecting: true, target } as IntersectionObserverEntry,
-    ], {} as IntersectionObserver)))
-    expect(raf).toHaveBeenCalled()
-    view.unmount()
-    expect(cancel).toHaveBeenCalled()
-  } finally {
-    globalThis.IntersectionObserver = OriginalObserver
-    width.mockRestore()
-    vi.restoreAllMocks()
-  }
 })

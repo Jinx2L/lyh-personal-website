@@ -88,7 +88,7 @@ export function ProjectBoardCaseStudy({ config }: { config: CaseConfig }) {
       <div className="site-container board-case-project-heading"><div className="case-label">02 / FULL PROJECT BOARD</div><div className="case-intro"><h2 className="case-module-title">完整项目，<br/><span>完整呈现。</span></h2><p>{config.boardCopy}</p></div></div>
       <div className="board-case-stage"><a className="site-container" href={config.boardImage} target="_blank" rel="noreferrer" aria-label={`查看${config.title.join('')}项目原图`}><img src={config.boardImage} alt={config.boardAlt} loading="lazy" decoding="async"/></a></div>
     </section>
-    <section className="case-value site-container" data-case-section="value"><span>03 / PROJECT VALUE</span><h2 className="case-module-title"><span className="case-value-title-line">{config.valueTitle[0]}</span><br/><span className="case-value-title-line case-value-title-line--dim">{config.valueTitle[1]}</span></h2><div className="case-value-copy" data-layout="single-column"><p>{config.valueCopy}</p></div></section>
+    <section className="case-value site-container" data-case-section="value"><span>03 / PROJECT VALUE</span><h2 className="case-module-title">{config.valueTitle[0]}<br/>{config.valueTitle[1]}</h2><div><p>{config.valueCopy}</p></div></section>
     <footer className="case-footer site-container" data-case-section="navigation"><a href="/#works" aria-label="返回项目列表"><ArrowLeft size={20}/> 返回项目列表</a><a href="/#contact">LET'S WORK TOGETHER <ArrowDownRight size={20}/></a></footer>
   </article>
 }

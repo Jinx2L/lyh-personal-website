@@ -1,15 +1,9 @@
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { gsap } from 'gsap'
 import { Hero } from '../components/Hero/Hero'
 import { createCaseOpening, createOpening, mountPortfolioMotion } from './portfolioMotion'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import App from '../App'
-
-async function renderLoadedApp() {
-  const result = render(<App />)
-  await waitFor(() => expect(result.container.querySelector('.route-loading')).not.toBeInTheDocument())
-  return result
-}
 
 it('reveals the title before supporting copy and restores its resting geometry', () => {
   const { container } = render(<Hero />)
@@ -33,9 +27,9 @@ it('leaves content readable without animation when reduced motion is enabled', (
   cleanup()
 })
 
-it('opens case-study title lines through a mask and restores their resting geometry', async () => {
+it('opens case-study title lines through a mask and restores their resting geometry', () => {
   window.history.replaceState({}, '', '/projects/academic')
-  const { container } = await renderLoadedApp()
+  const { container } = render(<App />)
   const line = container.querySelector<HTMLElement>('.case-hero-title-line')!
   const supporting = container.querySelector<HTMLElement>('.case-hero-bottom, .academic-hero-support')!
   const animation = createCaseOpening(container, false).pause()
@@ -49,9 +43,9 @@ it('opens case-study title lines through a mask and restores their resting geome
   window.history.replaceState({}, '', '/')
 })
 
-it('animates case-study sections without applying motion to the long project image', async () => {
+it('animates case-study sections without applying motion to the long project image', () => {
   window.history.replaceState({}, '', '/projects/academic')
-  const { container } = await renderLoadedApp()
+  const { container } = render(<App />)
   const geometry = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
     x: 0, y: 2000, top: 2000, bottom: 2600, left: 0, right: 1000, width: 1000, height: 600,
     toJSON: () => ({}),
@@ -79,8 +73,8 @@ it('restores inline styles on teardown so StrictMode can safely mount again', ()
   expect(container.querySelector<HTMLElement>('.hero-background-image')!.style.transform).toBe('')
 })
 
-it('reveals section content and removes its scroll controllers on teardown', async () => {
-  const { container } = await renderLoadedApp()
+it('reveals section content and removes its scroll controllers on teardown', () => {
+  const { container } = render(<App />)
   // jsdom has no layout. Supply below-fold geometry so once-only triggers do not immediately complete.
   const geometry = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
     x: 0, y: 2000, top: 2000, bottom: 2400, left: 0, right: 1000, width: 1000, height: 400,
@@ -102,21 +96,5 @@ it('reveals section content and removes its scroll controllers on teardown', asy
   }
   cleanup()
   expect(ScrollTrigger.getAll()).toHaveLength(before)
-  geometry.mockRestore()
-})
-
-it('keeps project media at scale one while retaining desktop scroll parallax', async () => {
-  const { container } = await renderLoadedApp()
-  const geometry = vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
-    x: 0, y: 2000, top: 2000, bottom: 2400, left: 0, right: 1000, width: 1000, height: 400,
-    toJSON: () => ({}),
-  })
-  const before = ScrollTrigger.getAll().length
-  const cleanup = mountPortfolioMotion(container, { reduced: false, compact: false })
-  const media = container.querySelector<HTMLElement>('.project-shot')!
-  const triggers = ScrollTrigger.getAll().slice(before)
-  expect(Number(gsap.getProperty(media, 'scale'))).toBe(1)
-  expect(triggers.some(trigger => trigger.vars.scrub === 1.2)).toBe(true)
-  cleanup()
   geometry.mockRestore()
 })

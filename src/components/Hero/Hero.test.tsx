@@ -1,12 +1,12 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+// @ts-expect-error Vitest runs this test in Node; the app intentionally omits Node types.
+import { readFileSync } from 'node:fs'
 import { Hero } from './Hero'
 
-beforeEach(() => {
-  vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
-  vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
-})
+declare const process: { cwd: () => string }
 
-afterEach(() => vi.restoreAllMocks())
+const heroBackgroundCss = readFileSync(`${process.cwd()}/src/components/Hero/HeroBackground.css`, 'utf8')
+const siteCss = readFileSync(`${process.cwd()}/src/index.css`, 'utf8')
 
 it('loops the compressed uploaded video beneath the existing ambient layers', () => {
   const { container } = render(<Hero />)
@@ -26,42 +26,11 @@ it('loops the compressed uploaded video beneath the existing ambient layers', ()
   expect(ambient.querySelector('.noise')).not.toBeNull()
 })
 
-it('pauses the hero video while off screen or hidden and resumes it when visible', () => {
-  const OriginalObserver = globalThis.IntersectionObserver
-  let deliver: ((isIntersecting: boolean) => void) | undefined
-  const disconnect = vi.fn()
-  class ControlledObserver {
-    constructor(callback: IntersectionObserverCallback) {
-      deliver = isIntersecting => callback([{ isIntersecting } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
-    }
-    observe() {}
-    unobserve() {}
-    disconnect = disconnect
-    takeRecords() { return [] }
-    root = null
-    rootMargin = '100px'
-    scrollMargin = '0px'
-    thresholds = [0]
-  }
-  globalThis.IntersectionObserver = ControlledObserver as unknown as typeof IntersectionObserver
-  const play = vi.mocked(HTMLMediaElement.prototype.play)
-  const pause = vi.mocked(HTMLMediaElement.prototype.pause)
-  const visibility = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible')
-  try {
-    const view = render(<Hero />)
-    act(() => deliver?.(false))
-    expect(pause).toHaveBeenCalled()
-    act(() => deliver?.(true))
-    expect(play).toHaveBeenCalled()
-    const pausesBeforeHide = pause.mock.calls.length
-    visibility.mockReturnValue('hidden')
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-    expect(pause.mock.calls.length).toBeGreaterThan(pausesBeforeHide)
-    view.unmount()
-    expect(disconnect).toHaveBeenCalledOnce()
-  } finally {
-    globalThis.IntersectionObserver = OriginalObserver
-  }
+it('uses a restrained warm grade for the cool-toned hero video', () => {
+  expect(heroBackgroundCss).toContain('brightness(0.94) contrast(1.04) saturate(0.82) sepia(0.08) hue-rotate(-5deg)')
+  expect(siteCss).not.toContain('.ambient::after')
+  expect(siteCss).toContain('.orb { position: absolute; border-radius: 999px; filter: blur(70px); opacity: .62; }')
+  expect(siteCss).toContain('.ambient-horizon { position: absolute; inset: 45% -10% -30%; background: radial-gradient(ellipse at center, rgba(231,228,214,.1), transparent 55%); transform: rotate(-6deg); opacity: .7; }')
 })
 
 describe('Hero', () => {

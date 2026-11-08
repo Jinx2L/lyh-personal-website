@@ -1,9 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>金融与电商产品</title>
   <rect width="64" height="64" rx="18" fill="#23221F"/>
-  <g stroke="#E7E4D6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="17" y="18" width="30" height="10" rx="5"/>
-    <rect x="17" y="36" width="13" height="10" rx="5"/>
-    <rect x="34" y="36" width="13" height="10" rx="5"/>
-    <path d="M32 28v4m-8 0h16m-16 0v4m16-4v4"/>
+  <g stroke="#E7E4D6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="15" y="19" width="34" height="24" rx="6"/>
+    <path d="M15 27h34M21 36h9"/>
+    <path d="M39 17v-2m-5 2v-3m10 3v-3"/>
+    <path d="M36 43v3h10a4 4 0 0 0 4-4V29"/>
   </g>
 </svg>

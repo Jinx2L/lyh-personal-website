@@ -1,6 +1,6 @@
-import { useEffect, useRef, useLayoutEffect, useState } from 'react'
+import { useRef, useLayoutEffect, useState } from 'react'
 import type { ReactNode, RefObject, CSSProperties } from 'react'
-import { motion, useScroll, useSpring, useTransform, useMotionValue, useVelocity, useReducedMotion, useInView } from 'motion/react'
+import { motion, useScroll, useSpring, useTransform, useMotionValue, useVelocity, useAnimationFrame, useReducedMotion, useInView } from 'motion/react'
 import './ScrollVelocity.css'
 
 type Props = {
@@ -23,13 +23,10 @@ function useElementWidth(ref: RefObject<HTMLSpanElement | null>) {
   useLayoutEffect(() => {
     const update = () => setWidth(ref.current?.offsetWidth ?? 0)
     update()
-    if (typeof ResizeObserver !== 'undefined') {
-      const observer = new ResizeObserver(update)
-      if (ref.current) observer.observe(ref.current)
-      return () => observer.disconnect()
-    }
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
+    if (ref.current) observer?.observe(ref.current)
     window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
+    return () => { observer?.disconnect(); window.removeEventListener('resize', update) }
   }, [ref])
   return width
 }
@@ -52,39 +49,15 @@ function VelocityText({ children, baseVelocity, scrollContainerRef, className, d
     return `${(((value + copyWidth) % copyWidth) + copyWidth) % copyWidth - copyWidth}px`
   })
   const direction = useRef(1)
-  useEffect(() => {
-    if (reducedMotion || !copyWidth || !inView) return
-    let frame = 0
-    let previousTime: number | undefined
-    const tick = (time: number) => {
-      frame = 0
-      const delta = previousTime === undefined ? 0 : time - previousTime
-      previousTime = time
-      let moveBy = direction.current * baseVelocity * (delta / 1000)
-      const factor = velocityFactor.get()
-      if (factor < 0) direction.current = -1
-      else if (factor > 0) direction.current = 1
-      moveBy += direction.current * moveBy * factor
-      baseX.set(baseX.get() + moveBy)
-      frame = requestAnimationFrame(tick)
-    }
-    const start = () => {
-      if (document.hidden || frame) return
-      previousTime = undefined
-      frame = requestAnimationFrame(tick)
-    }
-    const stop = () => {
-      if (frame) cancelAnimationFrame(frame)
-      frame = 0
-    }
-    const syncVisibility = () => document.hidden ? stop() : start()
-    document.addEventListener('visibilitychange', syncVisibility)
-    start()
-    return () => {
-      stop()
-      document.removeEventListener('visibilitychange', syncVisibility)
-    }
-  }, [baseVelocity, baseX, copyWidth, inView, reducedMotion, velocityFactor])
+  useAnimationFrame((_time, delta) => {
+    if (reducedMotion || !copyWidth || !inView || document.hidden) return
+    let moveBy = direction.current * baseVelocity * (delta / 1000)
+    const factor = velocityFactor.get()
+    if (factor < 0) direction.current = -1
+    else if (factor > 0) direction.current = 1
+    moveBy += direction.current * moveBy * factor
+    baseX.set(baseX.get() + moveBy)
+  })
   return <span ref={rowRef} className={parallaxClassName} style={parallaxStyle}>
     <motion.span className={scrollerClassName} style={{ x, ...scrollerStyle }}>
       {Array.from({ length: reducedMotion ? 1 : numCopies }, (_, i) =>

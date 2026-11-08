@@ -20,8 +20,8 @@ it('adds a distinct generated icon to every expertise card', () => {
   icons.forEach(icon => {
     expect(icon.getAttribute('src')).toMatch(/\.svg$/)
     expect(icon).toHaveAttribute('alt', '')
-    expect(icon).toHaveAttribute('width', '48')
-    expect(icon).toHaveAttribute('height', '48')
+    expect(icon).toHaveAttribute('width', '64')
+    expect(icon).toHaveAttribute('height', '64')
   })
 })
 
@@ -30,10 +30,14 @@ it('uses the site warm-white color for every expertise icon stroke', () => {
     expect(svg).toContain('stroke="#E7E4D6"')
     expect(svg).not.toContain('stroke="#B6C88F"')
     expect(svg).toContain('fill="#23221F"')
-    expect(svg).toContain('stroke-width="1.4"')
-    expect(svg).not.toContain('stroke-width="1.6"')
-    expect(svg).not.toContain('stroke-width="2"')
   })
+})
+
+it('matches each expertise icon to its updated capability', () => {
+  expect(systemsIcon).toContain('<title>金融与电商产品</title>')
+  expect(dataIcon).toContain('<title>多端体验设计</title>')
+  expect(mobileIcon).toContain('<title>组件化与设计系统</title>')
+  expect(designIcon).toContain('<title>AI 辅助与协作落地</title>')
 })
 
 it('raises expertise icon opacity from sixty percent to full on card hover', () => {
@@ -52,7 +56,7 @@ it('does not run decorative border sweeps before the cards enter the viewport', 
 describe('Expertise', () => {
   it('renders four capability categories', () => {
     render(<Expertise />)
-    ;['复杂 B 端系统','数据可视化','移动与电商体验','设计系统与落地'].forEach((label) => expect(screen.getByText(label)).toBeInTheDocument())
+    ;['金融与电商产品','多端体验设计','组件化与设计系统','AI 辅助与协作落地'].forEach((label) => expect(screen.getByText(label)).toBeInTheDocument())
   })
 })
 

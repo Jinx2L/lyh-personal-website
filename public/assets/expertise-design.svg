@@ -1,9 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>AI 辅助与协作落地</title>
   <rect width="64" height="64" rx="18" fill="#23221F"/>
-  <g stroke="#E7E4D6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="16" y="16" width="13" height="13" rx="4"/>
-    <rect x="35" y="16" width="13" height="13" rx="4"/>
-    <rect x="16" y="35" width="13" height="13" rx="4"/>
-    <path d="M41.5 35v13M35 41.5h13"/>
+  <g stroke="#E7E4D6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 15l2.4 7.6L42 25l-7.6 2.4L32 35l-2.4-7.6L22 25l7.6-2.4L32 15Z"/>
+    <path d="M18 36l1.5 4.5L24 42l-4.5 1.5L18 48l-1.5-4.5L12 42l4.5-1.5L18 36Z"/>
+    <circle cx="44" cy="42" r="5"/>
+    <path d="M38 48c1.6-2.4 3.5-3.5 6-3.5s4.4 1.1 6 3.5"/>
   </g>
 </svg>

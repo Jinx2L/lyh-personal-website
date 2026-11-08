@@ -18,7 +18,7 @@ export function Contact() {
           <h2 aria-label="LET'S CREATE SOMETHING CLEAR.">
             <ScrollVelocity texts={["LET'S CREATE", 'SOMETHING CLEAR.']} velocity={100} />
           </h2>
-          <p className="contact-cn contact-cn--wide-right" data-font-size="14px" data-alignment="right" data-wrapping="natural">重视业务价值、用户体验与细节落地，若觉得我的能力与岗位匹配，欢迎随时联系我</p>
+          <p className="contact-cn">重视业务价值、用户体验与细节落地，若觉得我的能力与岗位匹配，欢迎随时联系我</p>
         </div>
         <div className="contact-footer">
           <a href={`mailto:${contact.email}`}><span>Email</span><strong>{contact.email}</strong><ArrowUpRight size={18}/></a>

@@ -8,7 +8,7 @@ export function MembershipCaseStudy() {
       lines: ['小程序改版，', 'CMS模块，', '驱动门店线上化。'],
       titleLineHeight: 1,
       note: '让复杂数据转化为可读、可用的运营视角。',
-      images: [1, 2, 3].map(index => ({ src: `/assets/membership-hero-illustration-${index}.webp`, alt: `会员管理首屏插图 ${index}` })),
+      images: [1, 2, 3].map(index => ({ src: `/assets/membership-hero-illustration-${index}.png`, alt: `会员管理首屏插图 ${index}` })),
     },
     summary: '围绕商超多业态会员运营，整合会员增长、消费转化与积分权益数据，构建清晰一致的数据运营后台。', period: '2023.11-2024.01', scope: 'B端后台 UI / 数据可视化 / 设计规范',
     overviewTitle: ['聚合会员数据，', '辅助运营决策。'], overview: '深度对齐零售业务统计口径，以信息分层和合理图表选型呈现核心指标，辅助运营人员快速研判业务数据与运营态势。',

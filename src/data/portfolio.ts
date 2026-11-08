@@ -2,22 +2,38 @@ import type { ContactInfo, Experience, ExpertiseItem, Metric, Project } from '..
 
 export const experiences: Experience[] = [
   {
+    company: '独立 UI 设计师',
+    role: 'UI 设计师',
+    period: '2025.09–至今',
+    focus: [
+      '为 10+ B 端及移动端客户提供 UI 设计服务，独立推进需求沟通、交互优化、视觉设计与开发落地',
+      '参与产品从 0 到 1 设计，并将 AI 辅助设计与 Vibe Coding 融入原型验证和设计交付',
+    ],
+  },
+  {
     company: '九章开物（重庆）科技有限公司',
     role: 'UI 设计师',
     period: '2020.07–2025.08',
-    focus: ['B 端数据与营销平台', '从 0 到 1 / 设计系统 / 数据可视化'],
+    focus: [
+      '具备电商营销活动及运营页面设计经验，参与 618、双11 等营销场景的页面设计与迭代。熟悉活动组件化设计及 CMS 页面搭建逻辑，能够兼顾视觉表现、营销信息传达与运营配置效率。',
+    ],
   },
   {
     company: '马上消费金融股份有限公司',
     role: 'UI 设计师',
     period: '2016.11–2020.07',
-    focus: ['移动产品与电商体验', '后台系统 / 设计规范 / 双周迭代'],
+    focus: [
+      '参与安逸花 App 内嵌商城及相关业务系统的设计迭代，熟悉分期购物、金融信息展示及交易流程等业务场景。能够兼顾业务需求、用户体验与金融信息展示要求，优化关键操作路径及界面易用性。',
+    ],
   },
   {
     company: '比邻优科技有限公司',
     role: 'UI 设计师',
     period: '2015.11–2016.11',
-    focus: ['移动端产品设计', '电商应用 / 全链路 UI 设计'],
+    focus: [
+      '参与电商产品从 0 到 1 的 UI 设计，覆盖商品浏览、订单确认、支付及物流查询等核心场景',
+      '优化页面信息层级与交易操作路径，提升购物体验与关键操作效率',
+    ],
   },
 ]
 
@@ -46,8 +62,7 @@ export const projects: Project[] = [
     year: '2020.07-2025.07',
     summary: '主导商城首页 CMS 组件化改版，设计 6 大类可配置组件与分佣全链路，持续完成小程序功能迭代与 UI 走查，保障开发还原度达 90% 以上。',
     metric: '35% 用户活跃度提升',
-    imageSrc: '/assets/project-cloud-v2-poster.jpg',
-    videoSrc: '/assets/project-cloud-v2.mp4',
+    imageSrc: '/assets/project-cloud.jpg',
     visualKey: 'cloud',
   },
   {
@@ -56,8 +71,8 @@ export const projects: Project[] = [
     tags: ['B2B', 'Data Platform', 'Design System'],
     year: '2023.11-2024.01',
     summary: '围绕商超多业态会员运营，整合会员增长、消费转化与积分权益数据，构建数据可视化运营体系及后台设计规范，协同产品与研发完成落地验收。',
-    imageSrc: '/assets/project-membership-v2-poster.jpg',
-    videoSrc: '/assets/project-membership-v2.mp4',
+    imageSrc: '/assets/project-membership-poster.jpg',
+    videoSrc: '/assets/project-membership.mp4',
     visualKey: 'marketing',
   },
   {
@@ -66,8 +81,8 @@ export const projects: Project[] = [
     tags: ['Enterprise WeChat', 'Mini Program'],
     year: '2022.01-2022.05',
     summary: '面向汽车销售顾问，完成客户管理、营销任务与素材中心的 UI 及交互设计，优化线索跟进和内容检索流程，输出组件规范并跟进前端还原。',
-    imageSrc: '/assets/project-auto-v2-poster.jpg',
-    videoSrc: '/assets/project-auto-v2.mp4',
+    imageSrc: '/assets/project-auto-poster.jpg',
+    videoSrc: '/assets/project-auto.mp4',
     visualKey: 'auto',
   },
 ]
@@ -76,34 +91,34 @@ export const expertise: ExpertiseItem[] = [
   {
     id: '01',
     iconSrc: '/assets/expertise-systems.svg',
-    title: 'Complex B2B Systems',
-    zh: '复杂 B 端系统',
-    description: '把高密度业务信息重新组织成可理解、可扩展、可持续迭代的产品结构。',
-    bullets: ['信息架构', '多角色流程', '复杂业务界面'],
+    title: 'Finance & Commerce',
+    zh: '金融与电商产品',
+    description: '熟悉分期购物、交易流程与电商运营场景，在业务转化、信息披露与用户体验之间取得平衡。',
+    bullets: ['金融分期', '电商交易', '运营视觉'],
   },
   {
     id: '02',
     iconSrc: '/assets/expertise-data.svg',
-    title: 'Data Visualization',
-    zh: '数据可视化',
-    description: '建立指标层级和图表语言，让数据从“看见”进一步走向“判断与行动”。',
-    bullets: ['Dashboard', '指标层级', '数据钻取'],
+    title: 'Multi-platform UX',
+    zh: '多端体验设计',
+    description: '覆盖 App、H5、小程序与 PC 管理平台，能够从信息架构到关键路径持续优化产品体验。',
+    bullets: ['App / H5', '小程序', 'PC 管理平台'],
   },
   {
     id: '03',
     iconSrc: '/assets/expertise-mobile.svg',
-    title: 'Mobile & Commerce',
-    zh: '移动与电商体验',
-    description: '熟悉 App / H5 / 小程序设计规范，关注关键路径、转化效率与体验连续性。',
-    bullets: ['App / H5', '小程序', '电商链路'],
+    title: 'Modular Design System',
+    zh: '组件化与设计系统',
+    description: '通过运营组件、CMS 搭建逻辑与可复用规范，兼顾页面表现、配置效率和长期一致性。',
+    bullets: ['CMS 组件', '设计规范', '响应式思维'],
   },
   {
     id: '04',
     iconSrc: '/assets/expertise-design.svg',
-    title: 'Design System & Delivery',
-    zh: '设计系统与落地',
-    description: '通过组件体系、规范与 UI 走查，提升设计一致性和跨团队交付效率。',
-    bullets: ['组件体系', '规范建设', '研发协作'],
+    title: 'AI-assisted Delivery',
+    zh: 'AI 辅助与协作落地',
+    description: '将 AI 辅助设计与 Vibe Coding 融入原型验证、方案推进和开发走查，提升交付效率。',
+    bullets: ['AI 辅助设计', 'Vibe Coding', '开发走查'],
   },
 ]
 

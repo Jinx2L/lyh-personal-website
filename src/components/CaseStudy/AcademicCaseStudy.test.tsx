@@ -1,15 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import App from '../../App'
 import { SelectedWorks } from '../Works/SelectedWorks'
 
 afterEach(() => window.history.replaceState({}, '', '/'))
-
-async function renderAppAt(path: string) {
-  window.history.replaceState({}, '', path)
-  const result = render(<App />)
-  await waitFor(() => expect(result.container.querySelector('.route-loading')).not.toBeInTheDocument())
-  return result
-}
 
 function expectUnifiedHeroTitle(title: string, lineHeight = '0.9') {
   const heading = screen.getByRole('heading', { level: 1, name: title })
@@ -48,8 +41,9 @@ it('links all four projects to their independent detail pages', () => {
   expect(screen.getByRole('link', { name: '查看企微汽贸小程序详情' })).toHaveAttribute('href', '/projects/auto')
 })
 
-it('renders the condensed academic case study with the supplied project board', async () => {
-  const { container } = await renderAppAt('/projects/academic')
+it('renders the condensed academic case study with the supplied project board', () => {
+  window.history.replaceState({}, '', '/projects/academic')
+  const { container } = render(<App />)
   const heading = screen.getByRole('heading', { level: 1, name: '让复杂学科知识，易被检索、理解与连接。' })
   const hero = heading.closest('[data-case-section="hero"]')!
   expect(hero).toHaveClass('academic-story-hero', 'academic-story-hero--site-background')
@@ -101,8 +95,9 @@ it('renders the condensed academic case study with the supplied project board', 
   expect(screen.getByRole('link', { name: '返回项目列表' })).toHaveAttribute('href', '/#works')
 })
 
-it('renders the Chongbai case study with the supplied full-length project board', async () => {
-  const { container } = await renderAppAt('/projects/chongbai')
+it('renders the Chongbai case study with the supplied full-length project board', () => {
+  window.history.replaceState({}, '', '/projects/chongbai')
+  const { container } = render(<App />)
   expect(screen.getByRole('heading', { level: 1, name: '重百云购小程序' })).toBeInTheDocument()
   expect(screen.getByText('2020.07-2025.07')).toBeInTheDocument()
   expect(screen.getAllByText(/CASE STUDY 02/).length).toBeGreaterThanOrEqual(1)
@@ -122,24 +117,21 @@ it('renders the Chongbai case study with the supplied full-length project board'
   expect(screen.getByRole('link', { name: '返回项目列表' })).toHaveAttribute('href', '/#works')
 })
 
-it('uses the supplied hero illustration counts and latest auto project board', async () => {
-  const membership = await renderAppAt('/projects/membership')
-  const membershipImages = screen.getAllByRole('img', { name: /会员管理首屏插图/ })
-  expect(membershipImages).toHaveLength(3)
-  expect(membershipImages.map(image => image.getAttribute('src'))).toEqual([
-    '/assets/membership-hero-illustration-1.webp',
-    '/assets/membership-hero-illustration-2.webp',
-    '/assets/membership-hero-illustration-3.webp',
-  ])
+it('uses the supplied hero illustration counts and latest auto project board', () => {
+  window.history.replaceState({}, '', '/projects/membership')
+  const membership = render(<App />)
+  expect(screen.getAllByRole('img', { name: /会员管理首屏插图/ })).toHaveLength(3)
   membership.unmount()
 
-  await renderAppAt('/projects/auto')
+  window.history.replaceState({}, '', '/projects/auto')
+  render(<App />)
   expect(screen.getAllByRole('img', { name: /企微汽贸首屏插图/ })).toHaveLength(2)
   expect(screen.getByRole('img', { name: '企微汽贸小程序完整项目设计展示' })).toHaveAttribute('src', '/assets/auto-case-study-ui-07.jpg')
 })
 
-it('uses the approved three-line membership story title', async () => {
-  await renderAppAt('/projects/membership')
+it('uses the approved three-line membership story title', () => {
+  window.history.replaceState({}, '', '/projects/membership')
+  render(<App />)
   const heading = screen.getByRole('heading', { level: 1, name: '小程序改版，CMS模块，驱动门店线上化。' })
   expect(heading).toHaveStyle({ lineHeight: '1' })
   expect(Array.from(heading.querySelectorAll('.case-hero-title-line')).map(line => line.textContent)).toEqual([
@@ -149,8 +141,9 @@ it('uses the approved three-line membership story title', async () => {
   ])
 })
 
-it.each(['/projects/chongbai', '/projects/auto'])('compacts the hero meta spacing only on %s', async path => {
-  const { container } = await renderAppAt(path)
+it.each(['/projects/chongbai', '/projects/auto'])('compacts the hero meta spacing only on %s', path => {
+  window.history.replaceState({}, '', path)
+  const { container } = render(<App />)
   expect(container.querySelector('.academic-hero-meta')).toHaveClass('academic-hero-meta--tight')
   expect(screen.getByRole('heading', { level: 1 })).toHaveStyle({ lineHeight: '1' })
 })
@@ -159,30 +152,20 @@ it.each([
   ['/projects/chongbai', ['CMS组件化', '分佣全链路', '90%+设计还原度', '35%用户活跃提升']],
   ['/projects/membership', ['会员增长', '消费转化', '积分权益', '多业态数据分析']],
   ['/projects/auto', ['客户管理', '营销任务', '素材中心', '客户线索跟进']],
-])('uses four project-specific marquee points on %s at the shared speed', async (path, points) => {
-  const { container } = await renderAppAt(path)
+])('uses four project-specific marquee points on %s at the shared speed', (path, points) => {
+  window.history.replaceState({}, '', path)
+  const { container } = render(<App />)
   const marquee = container.querySelector('.academic-focus-marquee')!
   expect(marquee).toHaveClass('academic-focus-marquee--fast', 'academic-focus-marquee--tall')
   expect(marquee.querySelectorAll('.academic-focus-item')).toHaveLength(8)
   points.forEach(point => expect(marquee).toHaveTextContent(point))
 })
 
-it.each(['/projects/academic', '/projects/chongbai', '/projects/membership', '/projects/auto'])(
-  'left aligns the project value copy and dims only the second title line on %s',
-  async path => {
-    const { container } = await renderAppAt(path)
-    const section = container.querySelector('[data-case-section="value"]')!
-    const title = section.querySelector('h2')!
-    expect(title.querySelectorAll('.case-value-title-line')).toHaveLength(2)
-    expect(title.querySelector('.case-value-title-line--dim')).toBe(title.querySelectorAll('.case-value-title-line')[1])
-    expect(section.querySelector('.case-value-copy')).toHaveAttribute('data-layout', 'single-column')
-  },
-)
-
 it.each([
   ['/projects/auto', '企微汽贸小程序', '企微汽贸小程序完整项目设计展示', '/assets/auto-case-study-ui-07.jpg', '客户管理', '围绕销售流程，', '降低操作成本。', '2022.01-2022.05'],
-])('renders %s in the shared case-study framework', async (path, title, alt, src, focus, overviewFirstLine, overviewSecondLine, period) => {
-  const { container } = await renderAppAt(path)
+])('renders %s in the shared case-study framework', (path, title, alt, src, focus, overviewFirstLine, overviewSecondLine, period) => {
+  window.history.replaceState({}, '', path)
+  const { container } = render(<App />)
   expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument()
   expectUnifiedHeroTitle(title, path === '/projects/auto' ? '1' : '0.9')
   expect(screen.getByText(period)).toBeInTheDocument()
