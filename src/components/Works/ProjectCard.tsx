@@ -1,34 +1,26 @@
 import { ArrowUpRight } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { Project } from '../../types/portfolio'
 
 export function ProjectCard({ project, index }: { project: Project; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const hovering = useRef(false)
+  const [showHoverVideo, setShowHoverVideo] = useState(false)
 
   function stopPreview() {
-    hovering.current = false
-    const video = videoRef.current
-    if (!video) return
-    video.pause()
-    video.currentTime = 0
+    videoRef.current?.pause()
+    setShowHoverVideo(false)
   }
 
   function startPreview() {
-    const video = videoRef.current
-    if (!video || window.matchMedia('(hover: none)').matches) return
-    hovering.current = true
-    video.currentTime = 0
-    void video.play().then(() => {
-      if (!hovering.current) stopPreview()
-    }).catch(() => { /* Keep the first frame if the browser blocks playback. */ })
+    if (!project.videoSrc || window.matchMedia('(hover: none)').matches) return
+    setShowHoverVideo(true)
   }
 
   const visual = <div className={`project-visual visual-${project.visualKey}`}>
     <div className="project-ui-shell">
-      {project.videoSrc ? (
+      {project.videoSrc && showHoverVideo ? (
         <video ref={videoRef} className="project-shot" src={project.videoSrc} poster={project.imageSrc}
-          aria-label={`${project.name}项目展示`} muted loop playsInline preload="none" />
+          aria-label={`${project.name}项目展示`} autoPlay muted loop playsInline preload="auto" />
       ) : (
         <img className="project-shot" src={project.imageSrc} alt={`${project.name}项目展示`} loading="lazy" decoding="async" />
       )}

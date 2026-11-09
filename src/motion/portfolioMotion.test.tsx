@@ -85,13 +85,16 @@ it('reveals section content and removes its scroll controllers on teardown', () 
     toJSON: () => ({}),
   })
   const before = ScrollTrigger.getAll().length
-  const cleanup = mountPortfolioMotion(container, { reduced: false, compact: true })
+  const cleanup = mountPortfolioMotion(container, { reduced: false, compact: false })
   const triggers = ScrollTrigger.getAll().slice(before)
   expect(triggers.length).toBeGreaterThan(5)
   const groupedItems = new Set(container.querySelectorAll('.metric-item, .timeline-row, .expertise-card'))
   const groups = new Set(container.querySelectorAll('.metric-grid, .timeline, .expertise-grid'))
   expect(triggers.filter(trigger => groupedItems.has(trigger.vars.trigger as Element)).length).toBe(0)
   expect(triggers.filter(trigger => groups.has(trigger.vars.trigger as Element)).length).toBe(3)
+  const projectVisual = container.querySelector<HTMLElement>('.project-visual')!
+  expect(projectVisual.style.clipPath).toBe('')
+  expect(triggers.some(trigger => trigger.vars.scrub === 1.2)).toBe(false)
   triggers.forEach(trigger => trigger.animation?.progress(1))
   for (const element of container.querySelectorAll<HTMLElement>('.motion-line, .expertise-card, .project-visual')) {
     expect(element.style.opacity).toBe('')

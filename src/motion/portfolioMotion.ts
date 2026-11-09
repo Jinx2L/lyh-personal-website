@@ -80,12 +80,12 @@ export function mountPortfolioMotion(root: HTMLElement, { reduced, compact }: { 
       return
     }
     if (window.scrollY < 80 && !window.location.hash) createOpening(root, compact)
-    const reveal = (targets: Element[], trigger: Element, delay = 0, heading = false) => {
+    const reveal = (targets: Element[], trigger: Element, { delay = 0, heading = false, masked = true } = {}) => {
       if (!targets.length) return
       gsap.fromTo(targets,
         { y: compact ? 38 : heading ? 110 : 70, opacity: heading ? 1 : 0,
-          clipPath: 'inset(0 0 100% 0)', ...(heading ? { scaleY: 0.82 } : {}) },
-        { y: 0, opacity: 1, scaleY: 1, clipPath: 'inset(-20% -3% -20% -3%)',
+          ...(masked ? { clipPath: 'inset(0 0 100% 0)' } : {}), ...(heading ? { scaleY: 0.82 } : {}) },
+        { y: 0, opacity: 1, scaleY: 1, ...(masked ? { clipPath: 'inset(-20% -3% -20% -3%)' } : {}),
           duration: heading ? 1.45 : 1.15, stagger: 0.15, delay, ease: 'power4.out',
           clearProps: 'transform,opacity,clipPath',
           scrollTrigger: { trigger, start: 'top 91%', once: true } })
@@ -93,22 +93,20 @@ export function mountPortfolioMotion(root: HTMLElement, { reduced, compact }: { 
     root.querySelectorAll<HTMLElement>('section:not(#top)').forEach(section => {
       const headings = Array.from(section.querySelectorAll('h2')).filter(h => !h.querySelector('.contact-velocity'))
       const titleTargets = [...headings.flatMap(h => h.querySelector('.motion-line') ? Array.from(h.querySelectorAll('.motion-line')) : [h]), ...section.querySelectorAll('.contact-velocity-row')]
-      reveal(titleTargets, headings[0] ?? titleTargets[0] ?? section, 0, true)
-      section.querySelectorAll('.about-body, .contact-cn, .contact-invitation').forEach(el => reveal([el], el, 0.25))
+      reveal(titleTargets, headings[0] ?? titleTargets[0] ?? section, { heading: true })
+      section.querySelectorAll('.about-body, .contact-cn, .contact-invitation').forEach(el => reveal([el], el, { delay: 0.25 }))
       section.querySelectorAll('.metric-grid, .timeline, .expertise-grid').forEach(group => {
         const items = Array.from(group.querySelectorAll('.metric-item, .timeline-row, .expertise-card'))
-        reveal(items, group, 0.25)
+        reveal(items, group, { delay: 0.25 })
       })
       // Keep even-card offsets and hover transforms on their original shells.
       section.querySelectorAll('.project-card').forEach((card, index) => {
-        reveal(Array.from(card.querySelectorAll('.project-visual, .project-meta, .project-description')), card, index % 2 * 0.15)
-        const media = card.querySelector('.project-shot')
-        if (media && !compact) gsap.fromTo(media, { yPercent: -3, scale: 1.08 },
-          { yPercent: 3, scale: 1.08, ease: 'none',
-            scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 1.2 } })
+        const delay = index % 2 * 0.15
+        reveal(Array.from(card.querySelectorAll('.project-visual')), card, { delay, masked: false })
+        reveal(Array.from(card.querySelectorAll('.project-meta, .project-description')), card, { delay: delay + 0.15 })
       })
       const portrait = section.querySelector('.about-visual')
-      if (portrait) reveal([portrait], portrait, 0.25)
+      if (portrait) reveal([portrait], portrait, { delay: 0.25 })
     })
   }, root)
   const observer = new IntersectionObserver(entries => {

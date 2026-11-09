@@ -9,6 +9,5 @@
 .case-study .case-hero-title-line { transform-origin: 50% 100%; }
 
 @media (prefers-reduced-motion: reduce) {
-  .project-shot { transform: none !important; }
   .case-study .experience-aurora-band { animation: none !important; }
 }

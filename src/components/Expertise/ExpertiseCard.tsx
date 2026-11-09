@@ -7,7 +7,7 @@ export function ExpertiseCard({ item }: { item: ExpertiseItem }) {
     <BorderGlow edgeSensitivity={30} glowColor="40 80 80" backgroundColor="var(--expertise-card-bg, var(--panel))"
       borderRadius={28} glowRadius={40} glowIntensity={0.7} coneSpread={25}
       animated colors={['#88966a', '#0a0a09', '#213d82']}>
-    <article className="expertise-card">
+    <article className="expertise-card" data-expertise-id={item.id}>
       <div className="expertise-top">
         <img className="expertise-icon" src={item.iconSrc} alt="" width={60} height={60}
           data-default-opacity="0.6" data-hover-opacity="1" loading="lazy" decoding="async" />
