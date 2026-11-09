@@ -20,8 +20,8 @@ it('adds a distinct generated icon to every expertise card', () => {
   icons.forEach(icon => {
     expect(icon.getAttribute('src')).toMatch(/\.svg$/)
     expect(icon).toHaveAttribute('alt', '')
-    expect(icon).toHaveAttribute('width', '64')
-    expect(icon).toHaveAttribute('height', '64')
+    expect(icon).toHaveAttribute('width', '60')
+    expect(icon).toHaveAttribute('height', '60')
   })
 })
 

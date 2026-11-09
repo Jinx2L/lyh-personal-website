@@ -9,7 +9,7 @@ export function ExpertiseCard({ item }: { item: ExpertiseItem }) {
       animated colors={['#88966a', '#0a0a09', '#213d82']}>
     <article className="expertise-card">
       <div className="expertise-top">
-        <img className="expertise-icon" src={item.iconSrc} alt="" width={64} height={64}
+        <img className="expertise-icon" src={item.iconSrc} alt="" width={60} height={60}
           data-default-opacity="0.6" data-hover-opacity="1" loading="lazy" decoding="async" />
         <span className="expertise-index">{item.id}<ArrowUpRight size={18} strokeWidth={1.3} /></span>
       </div>

@@ -9,8 +9,12 @@ it('reveals the title before supporting copy and restores its resting geometry',
   const { container } = render(<Hero />)
   const title = container.querySelector<HTMLElement>('.hero-title')!
   const copy = container.querySelector<HTMLElement>('.hero-statement')!
+  const media = container.querySelector<HTMLElement>('.hero-background-media')!
+  const video = container.querySelector<HTMLVideoElement>('.hero-background-image')!
   const animation = createOpening(container, false).pause()
   animation.seek(0.1)
+  expect(Number(gsap.getProperty(media, 'scale'))).toBeGreaterThan(1)
+  expect(video.style.transform).toBe('')
   expect(Number(gsap.getProperty(title, 'yPercent'))).toBeGreaterThan(50)
   expect(Number(gsap.getProperty(copy, 'opacity'))).toBeLessThan(0.1)
   animation.progress(1)
@@ -70,7 +74,7 @@ it('restores inline styles on teardown so StrictMode can safely mount again', ()
   const cleanup = mountPortfolioMotion(container, { reduced: false, compact: true })
   cleanup()
   expect(container.querySelector<HTMLElement>('.hero-title')!.style.transform).toBe('')
-  expect(container.querySelector<HTMLElement>('.hero-background-image')!.style.transform).toBe('')
+  expect(container.querySelector<HTMLElement>('.hero-background-media')!.style.transform).toBe('')
 })
 
 it('reveals section content and removes its scroll controllers on teardown', () => {

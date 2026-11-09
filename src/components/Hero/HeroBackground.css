@@ -1,4 +1,12 @@
-.hero-background-image {
+.hero-background-media {
+  position: absolute;
+  inset: 0;
+  filter: brightness(0.94) contrast(1.04);
+  pointer-events: none;
+}
+
+.hero-background-image,
+.hero-background-poster {
   position: absolute;
   inset: 0;
   display: block;
@@ -6,6 +14,14 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.94) contrast(1.04);
-  pointer-events: none;
+}
+
+.hero-background-media[data-video-ready="true"] .hero-background-poster {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-background-poster {
+    transition: opacity 120ms linear;
+  }
 }

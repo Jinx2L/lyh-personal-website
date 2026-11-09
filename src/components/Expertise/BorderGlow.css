@@ -141,12 +141,9 @@
 }
 
 
-/* Preserve the existing card footprint, content spacing and hover lift. */
 #expertise .border-glow-card { transition: transform .35s cubic-bezier(.16,1,.3,1), background .35s ease; }
 #expertise .border-glow-card:hover { --expertise-card-bg: #171717; transform: translate3d(0,-6px,.01px); }
 #expertise .border-glow-inner { overflow: visible; }
-#expertise .border-glow-card .expertise-card { min-height: 388px; height: 100%; padding: 27px; border: 0; border-radius: inherit; background: transparent; }
-#expertise .border-glow-card .expertise-card:hover { transform: none; background: transparent; }
 @media (prefers-reduced-motion: reduce) {
   #expertise .border-glow-card, #expertise .border-glow-card:hover { --expertise-card-bg: #171717; transform: none; transition: none; }
 }

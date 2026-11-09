@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function createOpening(root: HTMLElement, compact: boolean) {
   const find = (selector: string) => root.querySelectorAll(selector)
   const opening = gsap.timeline({ defaults: { ease: 'power4.out' } })
-  opening.fromTo(find('.hero-background-image'), { scale: compact ? 1.05 : 1.12 },
+  opening.fromTo(find('.hero-background-media'), { scale: compact ? 1.05 : 1.12 },
     { scale: 1, duration: 2.4, clearProps: 'transform' }, 0)
   opening.fromTo(find('.hero-title'),
     { yPercent: 115, scaleY: 0.65, transformOrigin: '50% 100%', clipPath: 'inset(0 0 100% 0)' },

@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -8 80 80" fill="none">
   <title>AI 辅助与协作落地</title>
-  <rect width="64" height="64" rx="18" fill="#23221F"/>
+  <rect x="-8" y="-8" width="80" height="80" rx="22.5" fill="#23221F"/>
   <g stroke="#E7E4D6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M32 15l2.4 7.6L42 25l-7.6 2.4L32 35l-2.4-7.6L22 25l7.6-2.4L32 15Z"/>
     <path d="M18 36l1.5 4.5L24 42l-4.5 1.5L18 48l-1.5-4.5L12 42l4.5-1.5L18 36Z"/>

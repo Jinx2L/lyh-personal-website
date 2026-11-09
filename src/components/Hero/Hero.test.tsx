@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 // @ts-expect-error Vitest runs this test in Node; the app intentionally omits Node types.
 import { readFileSync } from 'node:fs'
 import { Hero } from './Hero'
@@ -14,16 +14,57 @@ it('loops the video beneath the remaining ambient layers', () => {
   const video = ambient.querySelector('video')!
   expect(video).not.toBeNull()
   expect(video).toHaveAttribute('src', '/assets/hero-background-1109-v2.mp4')
-  expect(video).toHaveAttribute('poster', '/assets/hero-background-1109-v2-poster.jpg')
   expect(video).toHaveAttribute('autoplay')
   expect(video).toHaveProperty('muted', true)
   expect(video).toHaveAttribute('loop')
   expect(video).toHaveAttribute('playsinline')
-  expect(ambient.querySelector('img')).toBeNull()
-  expect(ambient.firstElementChild).toBe(video)
+  const poster = ambient.querySelector('.hero-background-poster')
+  expect(poster).toHaveAttribute('src', '/assets/hero-background-1109-v2-poster.jpg')
+  expect(video.parentElement).toBe(poster?.parentElement)
+  expect(video.parentElement).toBe(ambient.firstElementChild)
   expect(ambient.querySelector('.orb')).toBeNull()
   expect(ambient.querySelector('.ambient-grid')).not.toBeNull()
   expect(ambient.querySelector('.noise')).not.toBeNull()
+})
+
+it('keeps the first-frame image over the video until a frame is submitted', () => {
+  const prototype = HTMLVideoElement.prototype
+  const request = vi.fn<(callback: VideoFrameRequestCallback) => number>().mockReturnValue(7)
+  const cancel = vi.fn()
+  const oldRequest = Object.getOwnPropertyDescriptor(prototype, 'requestVideoFrameCallback')
+  const oldCancel = Object.getOwnPropertyDescriptor(prototype, 'cancelVideoFrameCallback')
+  Object.defineProperties(prototype, {
+    requestVideoFrameCallback: { configurable: true, value: request },
+    cancelVideoFrameCallback: { configurable: true, value: cancel },
+  })
+  const { container, unmount } = render(<Hero />)
+  try {
+    const video = container.querySelector('video')!
+    const media = video.parentElement!
+    expect(media).toHaveAttribute('data-video-ready', 'false')
+    fireEvent.playing(video)
+    expect(media).toHaveAttribute('data-video-ready', 'false')
+    const frameSubmitted = request.mock.calls[0][0]
+    act(() => frameSubmitted(0, {} as VideoFrameCallbackMetadata))
+    expect(media).toHaveAttribute('data-video-ready', 'true')
+  } finally {
+    unmount()
+    if (oldRequest) Object.defineProperty(prototype, 'requestVideoFrameCallback', oldRequest)
+    else Reflect.deleteProperty(prototype, 'requestVideoFrameCallback')
+    if (oldCancel) Object.defineProperty(prototype, 'cancelVideoFrameCallback', oldCancel)
+    else Reflect.deleteProperty(prototype, 'cancelVideoFrameCallback')
+  }
+})
+
+it('keeps the image as a fallback until playback starts in older browsers', () => {
+  const { container } = render(<Hero />)
+  const video = container.querySelector('video')!
+  const media = video.parentElement!
+  expect(media).toHaveAttribute('data-video-ready', 'false')
+  fireEvent.loadedData(video)
+  expect(media).toHaveAttribute('data-video-ready', 'false')
+  fireEvent.playing(video)
+  expect(media).toHaveAttribute('data-video-ready', 'true')
 })
 
 it('adjusts only video brightness and contrast without a darkening overlay', () => {
