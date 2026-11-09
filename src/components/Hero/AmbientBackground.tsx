@@ -24,6 +24,22 @@ export function AmbientBackground() {
     return () => video.removeEventListener('playing', revealVideo)
   }, [])
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !('IntersectionObserver' in window)) return
+
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[entries.length - 1]
+      if (entry.isIntersecting) {
+        if (video.paused) void video.play().catch(() => {})
+      } else {
+        video.pause()
+      }
+    })
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="ambient" aria-hidden="true">
       <div className="hero-background-media" data-video-ready={videoReady}>

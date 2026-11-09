@@ -67,6 +67,59 @@ it('keeps the image as a fallback until playback starts in older browsers', () =
   expect(media).toHaveAttribute('data-video-ready', 'true')
 })
 
+it('pauses offscreen and resumes at the same position when the Hero returns', () => {
+  let reportEntry: (entry: IntersectionObserverEntry) => void
+  let observed: Element | undefined
+  const disconnect = vi.fn()
+
+  class ViewportObserver extends IntersectionObserver {
+    constructor(callback: IntersectionObserverCallback) {
+      super(callback)
+      reportEntry = entry => callback([entry], this)
+    }
+    observe(target: Element) { observed = target }
+    disconnect() { disconnect() }
+  }
+
+  vi.stubGlobal('IntersectionObserver', ViewportObserver)
+  const pause = vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
+  const play = vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
+  const { container, unmount } = render(<Hero />)
+  try {
+    const video = container.querySelector('video')!
+    expect(observed).toBe(video)
+    video.currentTime = 2
+    const reportIntersection = (isIntersecting: boolean) => {
+      const bounds = video.getBoundingClientRect()
+      act(() => reportEntry({
+        target: video,
+        isIntersecting,
+        intersectionRatio: isIntersecting ? 1 : 0,
+        boundingClientRect: bounds,
+        intersectionRect: bounds,
+        rootBounds: null,
+        time: performance.now(),
+      }))
+    }
+
+    reportIntersection(false)
+    expect(pause).toHaveBeenCalledOnce()
+    expect(play).not.toHaveBeenCalled()
+
+    reportIntersection(true)
+    expect(play).toHaveBeenCalledOnce()
+    expect(video.currentTime).toBe(2)
+
+    unmount()
+    expect(disconnect).toHaveBeenCalledOnce()
+  } finally {
+    unmount()
+    vi.unstubAllGlobals()
+    pause.mockRestore()
+    play.mockRestore()
+  }
+})
+
 it('adjusts only video brightness and contrast without a darkening overlay', () => {
   const videoFilters = Array.from(heroBackgroundCss.matchAll(/\bfilter:\s*([^;]+);/g), match => match[1])
   expect(videoFilters).toEqual(['brightness(0.94) contrast(1.04)'])

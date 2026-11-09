@@ -35,7 +35,7 @@ it('opens case-study title lines through a mask and restores their resting geome
   window.history.replaceState({}, '', '/projects/academic')
   const { container } = render(<App />)
   const line = container.querySelector<HTMLElement>('.case-hero-title-line')!
-  const supporting = container.querySelector<HTMLElement>('.case-hero-bottom, .academic-hero-support')!
+  const supporting = container.querySelector<HTMLElement>('.academic-hero-support')!
   const animation = createCaseOpening(container, false).pause()
   animation.seek(0.1)
   expect(Number(gsap.getProperty(line, 'yPercent'))).toBeGreaterThan(50)

@@ -2,6 +2,13 @@ import { ArrowUpRight } from 'lucide-react'
 import { useRef, useState } from 'react'
 import type { Project } from '../../types/portfolio'
 
+const projectDetailPaths: Partial<Record<string, string>> = {
+  '01': '/projects/academic',
+  '02': '/projects/chongbai',
+  '03': '/projects/membership',
+  '04': '/projects/auto',
+}
+
 export function ProjectCard({ project, index }: { project: Project; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [showHoverVideo, setShowHoverVideo] = useState(false)
@@ -28,17 +35,11 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
     <div className="project-visual-number">{project.id}</div>
   </div>
 
-  const details: Record<string, { href: string; label: string }> = {
-    '01': { href: '/projects/academic', label: '查看学科知识服务平台详情' },
-    '02': { href: '/projects/chongbai', label: '查看重百云购小程序详情' },
-    '03': { href: '/projects/membership', label: '查看重百会员管理中心详情' },
-    '04': { href: '/projects/auto', label: '查看企微汽贸小程序详情' },
-  }
-  const detail = details[project.id]
+  const detailPath = projectDetailPaths[project.id]
 
   return (
     <article className={`project-card project-card-${index + 1}`} onMouseEnter={startPreview} onMouseLeave={stopPreview}>
-      {detail ? <a className="project-detail-link" href={detail.href} aria-label={detail.label}>{visual}</a> : visual}
+      {detailPath ? <a className="project-detail-link" href={detailPath} aria-label={`查看${project.name}详情`}>{visual}</a> : visual}
       <div className="project-meta">
         <div>
           <div className="project-id">{project.id}</div>

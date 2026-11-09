@@ -85,10 +85,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .project-card:nth-child(even) { transform: translateY(90px); }
 .project-visual { height: clamp(440px, 42vw, 720px); border-radius: 26px; position: relative; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.06); background: #111; transition: filter .35s ease; }
 .project-card-2 .project-visual, .project-card-3 .project-visual { height: clamp(500px, 47vw, 790px); }
-.project-ui-shell { width: 76%; height: 66%; padding: 6px; border-radius: 18px; background: rgba(10,10,10,.84); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 50px 100px rgba(0,0,0,.36); transform: perspective(1200px) rotateX(6deg) rotateY(-7deg); transition: transform .65s cubic-bezier(.16,1,.3,1); }
+.project-ui-shell { width: 76%; height: 66%; padding: 6px; border-radius: 18px; background: var(--project-cover-bg, #000); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 50px 100px rgba(0,0,0,.36); transform: perspective(1200px) rotateX(6deg) rotateY(-7deg); transition: transform .65s cubic-bezier(.16,1,.3,1); }
+.project-ui-shell:has(video) { background: var(--project-video-bg, #000); }
 .project-card:hover .project-ui-shell { transform: perspective(1200px) rotateX(3deg) rotateY(-2deg) scale(1.035); }
-.visual-membership { background: radial-gradient(circle at 20% 22%, rgba(146,160,112,.28), transparent 30%), linear-gradient(145deg,#1c211c,#0f1110 65%); }
-.visual-cloud { background: radial-gradient(circle at 70% 18%, rgba(152,123,94,.34), transparent 32%), linear-gradient(150deg,#211b17,#100f0e 70%); }
+.visual-membership {
+  --project-cover-bg: #010c0f;
+  --project-video-bg: #00090c;
+  background: radial-gradient(circle at 20% 22%, rgba(146,160,112,.28), transparent 30%), linear-gradient(145deg,#1c211c,#0f1110 65%);
+}
+.visual-cloud {
+  --project-cover-bg: #0f0f0f;
+  --project-video-bg: #0f0f12;
+  background: radial-gradient(circle at 70% 18%, rgba(152,123,94,.34), transparent 32%), linear-gradient(150deg,#211b17,#100f0e 70%);
+}
 .visual-marketing { background: radial-gradient(circle at 18% 70%, rgba(95,122,125,.34), transparent 34%), linear-gradient(145deg,#182022,#0d0f10 68%); }
 .visual-auto { background: radial-gradient(circle at 74% 66%, rgba(117,110,134,.34), transparent 36%), linear-gradient(145deg,#1c1a20,#0e0d10 70%); }
 .project-shot { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }

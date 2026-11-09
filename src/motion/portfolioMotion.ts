@@ -32,7 +32,7 @@ export function createCaseOpening(root: HTMLElement, compact: boolean) {
   opening.fromTo(find('.case-nav > *, .case-kicker'),
     { y: compact ? -18 : -30, opacity: 0 },
     { y: 0, opacity: 1, duration: .95, stagger: .08, clearProps: 'transform,opacity' }, .88)
-  opening.fromTo(find('.case-hero-bottom, .case-scroll, .academic-hero-support, .academic-placeholder-card, .academic-hero-meta'),
+  opening.fromTo(find('.academic-hero-support, .academic-placeholder-card, .academic-hero-meta'),
     { y: compact ? 32 : 64, opacity: 0, clipPath: 'inset(0 0 100% 0)' },
     { y: 0, opacity: 1, clipPath: 'inset(-10% -2% -10% -2%)', duration: 1.2,
       stagger: .14, clearProps: 'transform,opacity,clipPath' }, 1.12)
@@ -60,10 +60,6 @@ function mountCaseStudyMotion(root: HTMLElement, compact: boolean) {
 
     const heading = section.querySelector<HTMLElement>('h2')
     if (heading) reveal([heading], heading, { delay: .12, duration: 1.55 })
-
-    const cards = Array.from(section.querySelectorAll(
-      '.board-case-focus article, .chongbai-metrics article'))
-    if (cards.length) reveal(cards, cards[0], { delay: .28, stagger: .16 })
 
     const copy = Array.from(section.querySelectorAll<HTMLElement>('.case-intro > p, .case-value > div'))
     if (copy.length) reveal(copy, copy[0], { delay: .32, duration: 1.15, stagger: .12 })
@@ -112,7 +108,7 @@ export function mountPortfolioMotion(root: HTMLElement, { reduced, compact }: { 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.setAttribute('data-motion-visible', String(entry.isIntersecting)))
   }, { rootMargin: '100px' })
-  const ambientSections = root.querySelectorAll('#top, #experience, .academic-hero-illustrations, .academic-focus-marquee')
+  const ambientSections = root.querySelectorAll('#experience, .academic-hero-illustrations, .academic-focus-marquee')
   ambientSections.forEach(section => observer.observe(section))
   const academicMarquee = root.querySelector<HTMLElement>('.academic-focus-marquee')
   const setMarqueeRate = (rate: number) => {
