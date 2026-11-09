@@ -6,6 +6,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.94) contrast(1.04) saturate(0.82) sepia(0.08) hue-rotate(-5deg);
+  filter: brightness(0.94) contrast(1.04);
   pointer-events: none;
 }

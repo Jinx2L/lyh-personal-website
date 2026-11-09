@@ -1,9 +1,7 @@
 /* Pause ambient loops outside the viewport; no global hidden initial states. */
 .motion-line-mask { display: block; overflow: clip; padding-block: .13em; margin-block: -.13em; }
 .motion-line { display: block; }
-[data-motion-visible="true"] .orb,
 [data-motion-visible="true"] .experience-aurora-band { will-change: transform; }
-[data-motion-visible="false"] .orb,
 [data-motion-visible="false"] .experience-aurora-band { animation-play-state: paused; will-change: auto; }
 
 .case-study .case-label,
